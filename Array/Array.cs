@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace HashTable;
+namespace Array;
 
 internal class Array<T> where T : unmanaged
 {
@@ -18,6 +18,10 @@ internal class Array<T> where T : unmanaged
         _count = 0;
         _pointer = Marshal.AllocHGlobal(Marshal.SizeOf<T>() * capacity);
     }
+
+    public int Count() => _count;
+
+    public int Capacity() => _capacity;
 
     public T this[int index]
     {
