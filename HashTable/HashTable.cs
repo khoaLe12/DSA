@@ -5,10 +5,6 @@ namespace HashTable;
 
 internal class HashTable
 {
-    Hashtable newHashTable = new Hashtable();
-    Dictionary<int, int> newDictionary = new Dictionary<int, int>();
-
-
     private const int InitialSize = 3;
 
     private struct bucket
@@ -109,8 +105,8 @@ internal class HashTable
             b = _buckets[bucketNumber];
             if(KeyEquals(b.key, key))
             {
-                b.key = null;
-                b.value = null;
+                _buckets[bucketNumber].key = null;
+                _buckets[bucketNumber].value = null;
                 _count--;
                 return;
             }
@@ -187,7 +183,8 @@ internal class HashTable
 
         _count = 0;
     }
-
+    public int Size() => _buckets.Length;
+    public int Count() => _count;
 
     private void Expand()
     {
@@ -210,7 +207,7 @@ internal class HashTable
     }
     private void PutEntry(bucket[] newBuckets, object key, object? nvalue)
     {
-        uint hashcode = InitHash(key, _buckets.Length, out uint seed, out uint incr);
+        uint hashcode = InitHash(key, newBuckets.Length, out uint seed, out uint incr);
         int collisionCount = 0;
         int bucketNumber = (int)seed;
 
@@ -224,7 +221,7 @@ internal class HashTable
             }
 
             collisionCount++;
-            bucketNumber = (int)(seed + collisionCount * incr) % _buckets.Length;
+            bucketNumber = (int)(seed + collisionCount * incr) % newBuckets.Length;
         }
     }
 
@@ -322,9 +319,6 @@ internal class HashTable
     }
     protected virtual bool KeyEquals(object? item, object key)
     {
-        if (object.ReferenceEquals(_buckets, item))
-            return false;
-
         if (object.ReferenceEquals(item, key))
             return true;
 
