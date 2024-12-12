@@ -217,9 +217,101 @@ internal class BinaryTree
     }
 
 
-    // Find Height of the tree
+    // Find Height of the tree using BFS method
+    public int GetHeightBFS()
+    {
+        // Seperate each level by a null node
+        if (_root is null)
+            return -1;
+
+        int height = 0;
+        Queue<Node?> queue = new();
+
+        queue.Enqueue(_root);
+        queue.Enqueue(null);
+
+        while (queue.Count > 0)
+        {
+            Node? node = queue.Dequeue();
+            if(node is null)
+            {
+                // Before it reach to a null Node, it has already traversed all nodes at a specific level
+                // And enqueue new descendants (next level)
+                height++;
+                if (queue.Count > 0)
+                    queue.Enqueue(null); // Seperate next level before traverse to the next
+            }
+            else
+            {
+                if (node.LeftNode is not null) queue.Enqueue(node.LeftNode);
+                if (node.RightNode is not null) queue.Enqueue(node.RightNode);
+            }
+        }
+
+        return height - 1;
+    }
+    // Find Height of the tree using DFS method
+    public int GetHeightDFS()
+    {
+        return GetHeight(_root);
+    }
+    private int GetHeight(Node? node)
+    {
+        if (node == null)
+            return -1;
+
+        int lHeight = GetHeight(node?.LeftNode);
+        int rHeight = GetHeight(node?.RightNode);
+
+        int height = lHeight;
+        if(rHeight > lHeight)
+            height = rHeight;
+        return height + 1;
+    }
+
 
     // Find ancestor of a node
+    public Node? FindAncestor(Node node)
+    {
+        if (_root is null || object.ReferenceEquals(node, _root))
+            return null;
+
+        Queue<Node> queue = new Queue<Node>();
+        queue.Enqueue(_root);
+        while (queue.Count > 0)
+        {
+            var cur = queue.Dequeue();
+            if(object.ReferenceEquals(cur.LeftNode, node) ||
+                object.ReferenceEquals(cur.RightNode, node))
+                return cur;
+
+            if (cur.LeftNode is not null) queue.Enqueue(cur.LeftNode);
+            if (cur.RightNode is not null) queue.Enqueue(cur.RightNode);
+        }
+
+        return null;
+    }
+
 
     // Find descendants of a node
+    public IEnumerable<Node> FindDescendants(Node node)
+    {
+        if (_root is null)
+            return Enumerable.Empty<Node>();
+
+        Queue<Node> queue = new Queue<Node>();
+        queue.Enqueue(_root);
+        while(queue.Count > 0)
+        {
+            var cur = queue.Dequeue();
+            if(object.ReferenceEquals(cur, node))
+            {
+                return new List<Node?>() { cur.LeftNode, cur.RightNode }.Where(n => n != null)!;
+            }
+
+            if (cur.LeftNode is not null) queue.Enqueue(cur.LeftNode);
+            if (cur.RightNode is not null) queue.Enqueue(cur.RightNode);
+        }
+        return Enumerable.Empty<Node>();
+    }
 }

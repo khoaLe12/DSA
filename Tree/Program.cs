@@ -49,43 +49,71 @@ Console.WriteLine($"Search BFS 7: {tree.SearchBFS(7) is not null}");
 Console.WriteLine($"Search DFS 4: {tree.SearchDFS(4) is not null}");
 Console.WriteLine($"Search BFS 4: {tree.SearchBFS(4) is not null}");
 
+//Demo1();
 
-var searchNode10 = tree.SearchDFS(10);
-if (searchNode10 is null)
-    Console.Write("\n\nNode with data 10 not found");
+Console.Write($"\n\nFind height using BFS: {tree.GetHeightBFS()}");
+Console.Write($"\n\nFind height using DFS: {tree.GetHeightDFS()}");
+
+var searchNode12 = tree.SearchBFS(12);
+if(searchNode12 is null)
+    Console.Write("\n\nNode with data 12 not found");
 else
 {
-    tree.InsertAtNode(searchNode10, 100);
-    Console.Write("\n\nAfter inserting 100 at node 10, traversal BFS: ");
-    tree.BFS();
-}
+    var ancestor = tree.FindAncestor(searchNode12);
+    Console.Write($"\n\nAncestor of node 12 is: {ancestor?.Data}");
 
-var searchNode5 = tree.SearchBFS(5);
-if (searchNode5 is null)
-    Console.Write("\n\nNode with data 5 not found");
-else
-{
-    tree.InsertAtNode(searchNode5, 50);
-    Console.Write("\n\nAfter inserting 50 at node 5, traversal BFS: ");
-    tree.BFS();
-}
-
-
-var searchNode11 = tree.SearchBFS(11);
-if (searchNode11 is null)
-    Console.Write("\n\nNode with data 11 not found");
-else
-{
-    tree.InsertAtNode(searchNode11, 110);
-    Console.Write("\n\nAfter inserting 110 at node 11, traversal BFS: ");
-    tree.BFS();
+    var descendants = tree.FindDescendants(searchNode12);
+    Console.Write($"\n\nDescendants of node 12 is: ");
+    foreach(var node in descendants)
+    {
+        Console.Write($"{node.Data} ");
+    }
 }
 
 
-tree.DeleteNode(5);
-Console.Write("\n\nAfter deleting node with value 5: ");
-tree.BFS();
 
-tree.DeleteNode(10);
-Console.Write("\n\nAfter deleting node with value 10: ");
-tree.BFS();
+
+
+
+void Demo1()
+{
+    var searchNode10 = tree.SearchDFS(10);
+    if (searchNode10 is null)
+        Console.Write("\n\nNode with data 10 not found");
+    else
+    {
+        tree.InsertAtNode(searchNode10, 100);
+        Console.Write("\n\nAfter inserting 100 at node 10, traversal BFS: ");
+        tree.BFS();
+    }
+
+    var searchNode5 = tree.SearchBFS(5);
+    if (searchNode5 is null)
+        Console.Write("\n\nNode with data 5 not found");
+    else
+    {
+        tree.InsertAtNode(searchNode5, 50);
+        Console.Write("\n\nAfter inserting 50 at node 5, traversal BFS: ");
+        tree.BFS();
+    }
+
+
+    var searchNode11 = tree.SearchBFS(11);
+    if (searchNode11 is null)
+        Console.Write("\n\nNode with data 11 not found");
+    else
+    {
+        tree.InsertAtNode(searchNode11, 110);
+        Console.Write("\n\nAfter inserting 110 at node 11, traversal BFS: ");
+        tree.BFS();
+    }
+
+
+    tree.DeleteNode(5);
+    Console.Write("\n\nAfter deleting node with value 5: ");
+    tree.BFS();
+
+    tree.DeleteNode(10);
+    Console.Write("\n\nAfter deleting node with value 10: ");
+    tree.BFS();
+}
