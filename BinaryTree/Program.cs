@@ -141,7 +141,7 @@ void DemoBinarySearchTree()
     // Lv0                10
     // Lv1        3                  16
     // Lv2      1   5             14    20
-    // Lv2            9                   25
+    // Lv3            9                   25
 
 
     Console.Write("Traverse the tree: ");
@@ -174,6 +174,10 @@ void DemoBinarySearchTree()
     Console.WriteLine($"The ceil of 2 is: {tree.Ceil(2)}"); // Expected 3
     Console.Write($"The ceil of 3 is: {tree.Ceil(3)}"); // Expected 3
 
+
+    //DemoAddAllInBST(tree);
+
+
 }
 
 void DemoDeleteInBST(BinarySearchTree tree)
@@ -189,4 +193,30 @@ void DemoDeleteInBST(BinarySearchTree tree)
     tree.Delete(25); // Expect 25 is deleted
     Console.Write("\n\nTraverse the tree: ");
     tree.InorderTraversal();
+}
+
+void DemoAddAllInBST(BinarySearchTree tree)
+{
+    tree.Insert(15);
+    tree.Insert(21);
+    tree.Insert(6);
+    tree.AddAllGreaterValue();
+    Console.Write("\n\nTraverse the tree: ");
+    tree.InorderTraversal();
+
+    // Before Add all
+    // Tree
+    // Lv0                10
+    // Lv1        3                  16
+    // Lv2      1   5            14      20
+    // Lv3            9            15      25
+    // Lv4          6                    21
+
+    // After Add all
+    // Tree
+    // Lv0                         121
+    // Lv1         144                                82
+    // Lv2    145      141                     111           66
+    // Lv3                 130                    97               25
+    // Lv4             136                                       46 
 }

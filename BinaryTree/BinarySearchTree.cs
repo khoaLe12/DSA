@@ -201,4 +201,63 @@ internal class BinarySearchTree
             return Ceil(node.RightNode, data);
         }
     }
+
+
+
+    // Easy problem
+    // For each node in the tree, it will be added to values of nodes that greater than it self.
+    // Illustration
+    //                        Node 'A'
+    //    Node 'B'                                Node 'C'
+    //            Node 'D'
+    // Some properties are recognized
+    // 1. The most right node will not be added by any value (it is the largest vaue)
+    // 2. The most left node will be added by all values (it is the smallest value)
+    // 3. Each node's value is added by all values on the right side of it (Node A = Node A  + Node C)
+    // 4. Left node is added by all values on the right side of it, its parent nodes, and all values on the right side of its parent node (Node 'B' = Node 'B'  +  Node 'D'  +  Node 'A'  +  Node 'C')
+    //                                                                                                                                    Left node               Right side   Parent node  Right side of parent node
+    // => Start from root and try to reach to the most right, and step by step reach to the most left
+    // The calculation will start from the most right, try to sum all values on each step
+    public void AddAllGreaterValue()
+    {
+        if (_root is null) return;
+        AddValueOnEachNode(_root, 0);
+    }
+    private int AddValueOnEachNode(Node node, int parentValue)
+    {
+        // The idea is to keep the total of all values that greater than the current node
+        // => Calculate the current node only by adding it with that total value
+        //
+        // parentValue here is the sum of all values that greater than the current node
+        // totalRightValue also represent the sum of all values that greater than the current node (it is more prioritized than parentValue)
+        // Calculate right -> current -> left
+        //               10                                       10
+        //          8                                    (8+10)=18
+        //     5                       ->        (5+24)  
+        //       6                                   (6+18)=24
+
+        // Calculate value of the right side of the current node
+        int totalRightValue = 0;
+        if (node.RightNode is not null)
+            totalRightValue = AddValueOnEachNode(node.RightNode, parentValue);
+
+        // Calculate value of the current node
+        if (totalRightValue > parentValue) 
+            node.Data += totalRightValue;
+        else 
+            node.Data += parentValue;
+
+        // Calculate value of the left side of the current node
+        int totalLeftValue = 0;
+        if(node.LeftNode is not null)
+            totalLeftValue = AddValueOnEachNode(node.LeftNode, node.Data);
+
+        if (totalLeftValue != 0) return totalLeftValue;
+        return node.Data;
+    }
+
+
+
+    // Easy problem
+
 }
