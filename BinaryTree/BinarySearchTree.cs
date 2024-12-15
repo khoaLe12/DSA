@@ -259,5 +259,134 @@ internal class BinarySearchTree
 
 
     // Easy problem
+    // Convert BST to balanced BST (the heights of the left and right subtrees differ by at most 1)
+    public void ConvertToBalancedBST()
+    {
+        if (_root is null) return;
+        // Get data in InorderTraversal 
+        List<int> data = new List<int>();
+        GetDataInorderTraversal(_root, ref data);
+        _root = ConvertToBalancedBST(data, 0, data.Count() - 1);
+    }
+    private void GetDataInorderTraversal(Node? node, ref List<int> data)
+    {
+        if(node is null) return;
+        GetDataInorderTraversal(node.LeftNode, ref data);
+        data.Add(node.Data);
+        GetDataInorderTraversal(node.RightNode, ref data);
+    }
+    private Node? ConvertToBalancedBST(List<int> data, int start, int end)
+    {
+        int middleIndex = (end - start) / 2;
+        middleIndex += start;
 
+        Node root = new Node(data.ElementAt(middleIndex));
+
+        if(middleIndex != start)
+            root.LeftNode = ConvertToBalancedBST(data, start, middleIndex - 1);
+        if(middleIndex != end)
+            root.RightNode = ConvertToBalancedBST(data, middleIndex + 1, end);
+
+        return root;
+    }
+    public void PrintNodeOnEachLevel()
+    {
+        if (_root is null) return;
+
+        int level = 0;
+        Console.Write($"Lv{level} ");
+
+        Queue<Node?> queue = new();
+        queue.Enqueue(_root);
+        queue.Enqueue(null);
+
+        while (queue.Count > 0)
+        {
+            Node? node = queue.Dequeue();
+
+            if (node is null)
+            {
+                if(queue.Count > 0)
+                {
+                    queue.Enqueue(null);
+                    level++;
+                    Console.Write($"   ,Lv{level} ");
+                }
+            }
+            else
+            {
+                Console.Write($"{node.Data} ");
+                if (node.LeftNode is not null) queue.Enqueue(node.LeftNode);
+                if (node.RightNode is not null) queue.Enqueue(node.RightNode);
+            }
+        }
+    }
+
+
+    // Medium problem
+    // Find the maximum element between two nodes of BST
+    // The idea to to use recursion to travel from root to destination nodes (root is Lowest Common Ancestor)
+    // The recursion will create a path from node1 to node2 passing through the root/LCA node
+    // Once it reach to destination, start to get the maximum value, and step by step go back to the root
+    // At each step, compare the current value of the node and the max values on the 2 sides it, then return the max of those 3 values
+    public int GetMaximumElementBetweenNodes(int node1, int node2)
+    {
+        if (_root is null) return -1;
+
+        if(node1 > node2)
+        {
+            int temp = node1;
+            node1 = node2;
+            node2 = temp;
+        }
+        var lcaNode = FindLowestCommonAncestor(node1, node2);
+        if (lcaNode is null) return -1;
+        int max = GetMaximum(lcaNode, node1, node2);
+        if(max == -1)  return -1;
+        return max;
+    }
+    private Node? FindLowestCommonAncestor(int node1, int node2)
+    {
+        if (_root is null) return null;
+        var temp = _root;
+        while(temp != null)
+        {
+            if (node1 < temp.Data && temp.Data < node2)
+                return temp;
+
+            if(node1 == temp.Data || node2 == temp.Data)
+                return temp;
+
+            if(node1 < temp.Data && node2 < temp.Data)
+                temp = temp.LeftNode;
+            else if(node1 > temp.Data && node2 > temp.Data)
+                temp = temp.RightNode;  
+        }
+
+        return null;
+    }
+    private int GetMaximum(Node? node, int? data1, int? data2)
+    {
+        if(node is null) return -1;
+
+        int maximumLeft = 0, maximumRight = 0;
+        if(data1 < node.Data)
+            maximumLeft = GetMaximum(node.LeftNode, data1, null);
+        else if(data2 < node.Data)
+            maximumLeft = GetMaximum(node.LeftNode, null, data2);
+
+        if (data1 > node.Data)
+            maximumRight = GetMaximum(node.RightNode, data1, null);
+        else if(data2 > node.Data)
+            maximumRight = GetMaximum(node.RightNode, null, data2);
+
+        if (maximumLeft == -1 || maximumRight == -1) return -1;
+
+        int max = node.Data;
+        if (maximumRight > max)
+            max = maximumRight;
+        if (maximumLeft > max)
+            max = maximumLeft;
+        return max;
+    }
 }

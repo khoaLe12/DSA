@@ -177,7 +177,9 @@ void DemoBinarySearchTree()
 
     //DemoAddAllInBST(tree);
 
+    //DemoConvertToBalancedBST(tree);
 
+    DemoGetMaximumElementBetweenNodes(tree);
 }
 
 void DemoDeleteInBST(BinarySearchTree tree)
@@ -219,4 +221,48 @@ void DemoAddAllInBST(BinarySearchTree tree)
     // Lv2    145      141                     111           66
     // Lv3                 130                    97               25
     // Lv4             136                                       46 
+}
+
+void DemoConvertToBalancedBST(BinarySearchTree tree)
+{
+    tree.Insert(26);
+    tree.Insert(28);
+    tree.Insert(27);
+    // Tree
+    // Lv0                10
+    // Lv1        3                  16
+    // Lv2      1   5             14    20
+    // Lv3            9                   25
+    // Lv4                                  26
+    // Lv5                                    28
+    // Lv6                                  27
+
+    Console.Write("\n\nBefore convert to Balanced BST: ");
+    tree.PrintNodeOnEachLevel();
+
+    tree.ConvertToBalancedBST();
+
+    Console.Write("\nAfter convert to Balanced BST: ");
+    tree.PrintNodeOnEachLevel();
+}
+
+void DemoGetMaximumElementBetweenNodes(BinarySearchTree tree)
+{
+    tree.Insert(26);
+    tree.Insert(28);
+    tree.Insert(27);
+    // Tree
+    // Lv0                10
+    // Lv1        3                  16
+    // Lv2      1   5             14    20
+    // Lv3            9                   25
+    // Lv4                                  26
+    // Lv5                                    28
+    // Lv6                                  27
+
+    Console.Write($"\n\nThe maximum element between 2 nodes '9' and '27' is: {tree.GetMaximumElementBetweenNodes(9, 27)}");
+    Console.Write($"\nThe maximum element between 2 nodes '5' and '20' is: {tree.GetMaximumElementBetweenNodes(5, 20)}");
+    Console.Write($"\nThe maximum element between 2 nodes '9' and '10' is: {tree.GetMaximumElementBetweenNodes(9, 10)}");
+    Console.Write($"\nThe maximum element between 2 nodes '10' and '9' is: {tree.GetMaximumElementBetweenNodes(10, 9)}");
+    Console.Write($"\nThe maximum element between 2 nodes '10' and '27' is: {tree.GetMaximumElementBetweenNodes(10, 27)}");
 }
