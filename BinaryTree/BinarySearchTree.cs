@@ -328,7 +328,7 @@ internal class BinarySearchTree
     // The idea to to use recursion to travel from root to destination nodes (root is Lowest Common Ancestor)
     // The recursion will create a path from node1 to node2 passing through the root/LCA node
     // Once it reach to destination, start to get the maximum value, and step by step go back to the root
-    // At each step, compare the current value of the node and the max values on the 2 sides it, then return the max of those 3 values
+    // At each step, compare the value of the current node and the max values on the 2 sides of it, then return the max of those 3 values
     public int GetMaximumElementBetweenNodes(int node1, int node2)
     {
         if (_root is null) return -1;
