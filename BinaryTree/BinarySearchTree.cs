@@ -342,7 +342,6 @@ internal class BinarySearchTree
         var lcaNode = FindLowestCommonAncestor(node1, node2);
         if (lcaNode is null) return -1;
         int max = GetMaximum(lcaNode, node1, node2);
-        if(max == -1)  return -1;
         return max;
     }
     private Node? FindLowestCommonAncestor(int node1, int node2)
